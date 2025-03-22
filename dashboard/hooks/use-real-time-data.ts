@@ -11,14 +11,17 @@ interface RealTimeUpdate {
 }
 
 export function useRealTimeData() {
-  const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(true)
+  const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(false) // Disabled by default
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [updateCount, setUpdateCount] = useState(0)
   const queryClient = useQueryClient()
 
   const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/ws"
 
-  const { isConnected, connectionStatus, lastMessage } = useWebSocket(wsUrl, {
+  // Disable WebSocket connection when real-time is disabled
+  const { isConnected, connectionStatus, lastMessage } = useWebSocket(
+    isRealTimeEnabled ? wsUrl : "", 
+    {
     onMessage: (message) => {
       if (!isRealTimeEnabled) return
 

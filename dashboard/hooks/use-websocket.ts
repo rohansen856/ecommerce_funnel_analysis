@@ -31,6 +31,12 @@ export function useWebSocket(url: string, options: UseWebSocketOptions = {}) {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const connect = () => {
+    if (!url) {
+      setConnectionStatus("disconnected")
+      setIsConnected(false)
+      return
+    }
+    
     try {
       setConnectionStatus("connecting")
       ws.current = new WebSocket(url)
@@ -92,7 +98,12 @@ export function useWebSocket(url: string, options: UseWebSocketOptions = {}) {
   }
 
   useEffect(() => {
-    connect()
+    if (url) {
+      connect()
+    } else {
+      setConnectionStatus("disconnected")
+      setIsConnected(false)
+    }
 
     return () => {
       disconnect()
