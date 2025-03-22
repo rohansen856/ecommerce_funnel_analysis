@@ -92,25 +92,39 @@ services:
     networks:
       - funnel_network
 
-  # app:
-  #   build: .
-  #   container_name: funnel_app
-  #   restart: no
-  #   ports:
-  #     - "8000:8000"
-  #   environment:
-  #     - MONGODB_URL=mongodb://admin:password123@mongodb:27017/funnel_analysis?authSource=admin
-  #     - MILVUS_HOST=milvus-standalone
-  #     - MILVUS_PORT=19530
-  #     - REDIS_URL=redis://redis:6379
-  #   depends_on:
-  #     - mongodb
-  #     - milvus-standalone
-  #     - redis
-  #   volumes:
-  #     - ./data:/app/data
-  #   networks:
-  #     - funnel_network
+  app:
+    build: .
+    container_name: funnel_app
+    restart: no
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/funnel_analysis?authSource=admin
+      - MILVUS_HOST=milvus-standalone
+      - MILVUS_PORT=19530
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - milvus-standalone
+      - redis
+    volumes:
+      - ./data:/app/data
+    networks:
+      - funnel_network
+
+  dashboard:
+    build: ./dashboard
+    container_name: funnel_dashboard
+    restart: no
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NODE_ENV=production
+    depends_on:
+      - app
+    networks:
+      - funnel_network
 
 volumes:
   mongodb_data:
