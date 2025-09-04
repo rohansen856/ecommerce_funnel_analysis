@@ -115,15 +115,15 @@ export function RealTimeAlerts() {
       </CardHeader>
       <CardContent>
         {activeAlerts.length > 0 ? (
-          <div className="space-y-3 max-h-80 overflow-y-auto">
+          <div className="space-y-3 max-h-60 md:max-h-80 overflow-y-auto">
             {activeAlerts.map((alert) => (
-              <div key={alert.id} className={`p-3 rounded-lg border ${getAlertColor(alert.type)}`}>
+              <div key={alert.id} className={`p-2 md:p-3 rounded-lg border ${getAlertColor(alert.type)}`}>
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3 flex-1">
+                  <div className="flex items-start gap-2 md:gap-3 flex-1">
                     {getAlertIcon(alert.type)}
-                    <div className="flex-1">
-                      <div className="font-medium text-sm">{alert.title}</div>
-                      <div className="text-xs mt-1">{alert.message}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-xs md:text-sm truncate">{alert.title}</div>
+                      <div className="text-xs mt-1 line-clamp-2">{alert.message}</div>
                       <div className="text-xs mt-2 opacity-75">{formatDistanceToNow(alert.timestamp)} ago</div>
                     </div>
                   </div>
@@ -131,7 +131,7 @@ export function RealTimeAlerts() {
                     variant="ghost"
                     size="sm"
                     onClick={() => dismissAlert(alert.id)}
-                    className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+                    className="h-6 w-6 p-0 opacity-50 hover:opacity-100 flex-shrink-0"
                   >
                     <X className="h-3 w-3" />
                   </Button>

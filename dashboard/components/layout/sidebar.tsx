@@ -4,7 +4,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { BarChart3, Users, TrendingUp, MessageSquare, Settings, Home, Filter } from "lucide-react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { BarChart3, Users, TrendingUp, MessageSquare, Settings, Home, Filter, Menu } from "lucide-react"
+import { useState } from "react"
 
 const navigation = [
   {
@@ -34,11 +37,11 @@ const navigation = [
   },
 ]
 
-export function Sidebar() {
+function SidebarContent() {
   const pathname = usePathname()
 
   return (
-    <div className="flex h-full w-64 flex-col bg-gray-50 border-r">
+    <div className="flex h-full flex-col">
       <div className="flex h-16 items-center px-6 border-b">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-6 w-6 text-blue-600" />
@@ -67,6 +70,32 @@ export function Sidebar() {
           Settings
         </Button>
       </div>
+    </div>
+  )
+}
+
+export function Sidebar() {
+  const isMobile = useIsMobile()
+  const [isOpen, setIsOpen] = useState(false)
+
+  if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="md:hidden fixed top-4 left-4 z-50">
+            <Menu className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0">
+          <SidebarContent />
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  return (
+    <div className="flex h-full w-64 flex-col bg-gray-50 border-r">
+      <SidebarContent />
     </div>
   )
 }

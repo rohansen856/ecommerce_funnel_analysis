@@ -47,8 +47,8 @@ export default function DashboardPage() {
         showDatePicker
       />
       <div className="flex-1 overflow-auto">
-        <div className="space-y-6 p-6">
-          <div className="grid gap-6 md:grid-cols-2">
+        <div className="space-y-4 md:space-y-6 p-4 md:p-6">
+          <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
             <LiveMetrics />
             <RealTimeAlerts />
           </div>
@@ -56,47 +56,47 @@ export default function DashboardPage() {
           {dashboardData && <OverviewStats data={dashboardData} loading={dashboardLoading} />}
 
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="trends">Trends</TabsTrigger>
-              <TabsTrigger value="dropoffs">Drop-offs</TabsTrigger>
-              <TabsTrigger value="insights">Insights</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+              <TabsTrigger value="overview" className="text-xs md:text-sm">Overview</TabsTrigger>
+              <TabsTrigger value="trends" className="text-xs md:text-sm">Trends</TabsTrigger>
+              <TabsTrigger value="dropoffs" className="text-xs md:text-sm">Drop-offs</TabsTrigger>
+              <TabsTrigger value="insights" className="text-xs md:text-sm">Insights</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 lg:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Daily Conversion Trends</CardTitle>
-                    <CardDescription>Daily conversion rates over the last 30 days</CardDescription>
+                    <CardTitle className="text-lg md:text-xl">Daily Conversion Trends</CardTitle>
+                    <CardDescription className="text-sm">Daily conversion rates over the last 30 days</CardDescription>
                   </CardHeader>
                   <CardContent>
                     {trendsLoading ? (
-                      <div className="h-[300px] flex items-center justify-center">
+                      <div className="h-[250px] md:h-[300px] flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                       </div>
                     ) : trendsData && trendsData.length > 0 ? (
-                      <div className="h-[300px]">
+                      <div className="h-[250px] md:h-[300px]">
                         <div className="space-y-4">
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4">
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-blue-600">{trendsData.length}</div>
+                              <div className="text-lg md:text-2xl font-bold text-blue-600">{trendsData.length}</div>
                               <div className="text-xs text-gray-500">Data Points</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-green-600">
+                              <div className="text-lg md:text-2xl font-bold text-green-600">
                                 {(trendsData.reduce((sum, item) => sum + item.conversion_rate, 0) / trendsData.length).toFixed(1)}%
                               </div>
                               <div className="text-xs text-gray-500">Avg Conversion</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-purple-600">
+                              <div className="text-lg md:text-2xl font-bold text-purple-600">
                                 {Math.max(...trendsData.map(item => item.conversion_rate)).toFixed(1)}%
                               </div>
                               <div className="text-xs text-gray-500">Peak Rate</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-orange-600">
+                              <div className="text-lg md:text-2xl font-bold text-orange-600">
                                 {trendsData.reduce((sum, item) => sum + item.conversions, 0).toLocaleString()}
                               </div>
                               <div className="text-xs text-gray-500">Total Conversions</div>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                      <div className="h-[250px] md:h-[300px] flex items-center justify-center text-muted-foreground">
                         No conversion trends data available
                       </div>
                     )}
@@ -119,8 +119,8 @@ export default function DashboardPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Top Drop-off Points</CardTitle>
-                    <CardDescription>Where users are leaving the funnel most frequently</CardDescription>
+                    <CardTitle className="text-lg md:text-xl">Top Drop-off Points</CardTitle>
+                    <CardDescription className="text-sm">Where users are leaving the funnel most frequently</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
@@ -181,9 +181,9 @@ export default function DashboardPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {dashboardData && (
-                      <div className="grid gap-4 md:grid-cols-2">
-                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                          <h4 className="font-medium text-blue-900 mb-2">📊 Conversion Performance</h4>
+                      <div className="grid gap-4 lg:grid-cols-2">
+                        <div className="p-3 md:p-4 bg-blue-50 rounded-lg border border-blue-200">
+                          <h4 className="font-medium text-blue-900 mb-2 text-sm md:text-base">📊 Conversion Performance</h4>
                           <p className="text-sm text-blue-700">
                             Overall conversion rate is {dashboardData.overall_conversion_rate.toFixed(1)}%. 
                             {dashboardData.overall_conversion_rate < 5 

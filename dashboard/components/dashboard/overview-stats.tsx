@@ -30,14 +30,14 @@ export function OverviewStats({ data, loading }: OverviewStatsProps) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Users</CardTitle>
           <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{data.total_users.toLocaleString()}</div>
+          <div className="text-xl md:text-2xl font-bold">{data.total_users.toLocaleString()}</div>
           <p className="text-xs text-muted-foreground">Unique visitors</p>
         </CardContent>
       </Card>
@@ -48,7 +48,7 @@ export function OverviewStats({ data, loading }: OverviewStatsProps) {
           <MousePointer className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{data.total_sessions.toLocaleString()}</div>
+          <div className="text-xl md:text-2xl font-bold">{data.total_sessions.toLocaleString()}</div>
           <p className="text-xs text-muted-foreground">User sessions</p>
         </CardContent>
       </Card>
@@ -59,7 +59,7 @@ export function OverviewStats({ data, loading }: OverviewStatsProps) {
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{data.overall_conversion_rate.toFixed(1)}%</div>
+          <div className="text-xl md:text-2xl font-bold">{data.overall_conversion_rate.toFixed(1)}%</div>
           <p className="text-xs text-muted-foreground">Overall conversion</p>
         </CardContent>
       </Card>
@@ -73,9 +73,9 @@ export function OverviewStats({ data, loading }: OverviewStatsProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
-            <Badge variant="secondary">Desktop: {(data.mobile_vs_desktop_conversion.Desktop || 0).toFixed(1)}%</Badge>
-            <Badge variant="outline">Mobile: {(data.mobile_vs_desktop_conversion.Mobile || 0).toFixed(1)}%</Badge>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Badge variant="secondary" className="text-xs">Desktop: {(data.mobile_vs_desktop_conversion.Desktop || 0).toFixed(1)}%</Badge>
+            <Badge variant="outline" className="text-xs">Mobile: {(data.mobile_vs_desktop_conversion.Mobile || 0).toFixed(1)}%</Badge>
           </div>
         </CardContent>
       </Card>

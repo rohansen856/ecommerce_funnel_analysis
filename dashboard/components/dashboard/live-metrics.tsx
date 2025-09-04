@@ -55,30 +55,30 @@ export function LiveMetrics() {
       </CardHeader>
       <CardContent>
         {dashboardData ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-              <Users className="h-8 w-8 text-blue-500" />
+              <Users className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
               <div>
-                <div className="text-2xl font-bold text-blue-700">{dashboardData.total_users.toLocaleString()}</div>
-                <div className="text-sm text-blue-600">Active Users</div>
+                <div className="text-lg md:text-2xl font-bold text-blue-700">{dashboardData.total_users.toLocaleString()}</div>
+                <div className="text-xs md:text-sm text-blue-600">Active Users</div>
               </div>
             </div>
 
             <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-              <MousePointer className="h-8 w-8 text-green-500" />
+              <MousePointer className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
               <div>
-                <div className="text-2xl font-bold text-green-700">{dashboardData.total_sessions.toLocaleString()}</div>
-                <div className="text-sm text-green-600">Live Sessions</div>
+                <div className="text-lg md:text-2xl font-bold text-green-700">{dashboardData.total_sessions.toLocaleString()}</div>
+                <div className="text-xs md:text-sm text-green-600">Live Sessions</div>
               </div>
             </div>
 
             <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-              <TrendingUp className="h-8 w-8 text-purple-500" />
+              <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-purple-500" />
               <div>
-                <div className="text-2xl font-bold text-purple-700">
+                <div className="text-lg md:text-2xl font-bold text-purple-700">
                   {dashboardData.overall_conversion_rate.toFixed(1)}%
                 </div>
-                <div className="text-sm text-purple-600">Conversion Rate</div>
+                <div className="text-xs md:text-sm text-purple-600">Conversion Rate</div>
               </div>
             </div>
           </div>

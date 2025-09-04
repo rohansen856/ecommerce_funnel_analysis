@@ -68,7 +68,7 @@ export default function FunnelPage() {
         showDatePicker
       />
       <div className="flex-1 overflow-auto">
-        <div className="space-y-6 p-6">
+        <div className="space-y-4 md:space-y-6 p-4 md:p-6">
           {/* Filters */}
           <Card>
             <CardHeader>
@@ -96,16 +96,16 @@ export default function FunnelPage() {
                 </div>
 
                 {summaryStats && (
-                  <div className="flex gap-6">
+                  <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">{summaryStats.totalUsers.toLocaleString()}</div>
-                      <div className="text-sm text-gray-500">Total Users</div>
+                      <div className="text-xl md:text-2xl font-bold text-blue-600">{summaryStats.totalUsers.toLocaleString()}</div>
+                      <div className="text-xs md:text-sm text-gray-500">Total Users</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">
+                      <div className="text-xl md:text-2xl font-bold text-green-600">
                         {summaryStats.avgConversionRate.toFixed(1)}%
                       </div>
-                      <div className="text-sm text-gray-500">Avg Conversion</div>
+                      <div className="text-xs md:text-sm text-gray-500">Avg Conversion</div>
                     </div>
                   </div>
                 )}
