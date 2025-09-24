@@ -1,4 +1,5 @@
 import axios from "axios"
+import { getDemoData } from "./demo-data"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 
@@ -7,7 +8,43 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 5000, // 5 second timeout
 })
+
+// Add response interceptor to handle fallback to demo data
+api.interceptors.response.use(
+  (response) => {
+    // Emit live mode event when backend is available
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('live-mode-active'))
+    }
+    return response
+  },
+  (error) => {
+    if (error.code === 'ECONNREFUSED' ||
+        error.code === 'ENETUNREACH' ||
+        error.code === 'ENOTFOUND' ||
+        error.message?.includes('Network Error') ||
+        error.message?.includes('timeout') ||
+        !navigator.onLine) {
+
+      console.warn('🔌 Backend unavailable, falling back to demo data:', error.message)
+
+      // Emit demo mode event for status indicator
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('demo-mode-active'))
+      }
+
+      // Extract endpoint from the failed request
+      const endpoint = error.config?.url
+      const params = error.config?.params
+
+      // Return demo data response
+      return Promise.resolve(getDemoData(endpoint, params))
+    }
+    return Promise.reject(error)
+  }
+)
 
 // API endpoints
 export const dashboardAPI = {

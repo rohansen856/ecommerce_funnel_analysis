@@ -3,15 +3,34 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Wifi, WifiOff, RefreshCw, Pause, Play } from "lucide-react"
+import { Wifi, WifiOff, RefreshCw, Pause, Play, TestTube } from "lucide-react"
 import { useRealTimeData } from "@/hooks/use-real-time-data"
 import { formatDistanceToNow } from "date-fns"
+import { useState, useEffect } from "react"
 
 export function RealTimeStatus() {
   const { isRealTimeEnabled, isConnected, connectionStatus, lastUpdate, updateCount, toggleRealTime } =
     useRealTimeData()
 
+  const [isDemoMode, setIsDemoMode] = useState(false)
+
+  // Listen for demo data usage (set by our API interceptor)
+  useEffect(() => {
+    const handleDemoMode = () => setIsDemoMode(true)
+    const handleLiveMode = () => setIsDemoMode(false)
+
+    // Custom events for demo/live mode tracking
+    window.addEventListener('demo-mode-active', handleDemoMode)
+    window.addEventListener('live-mode-active', handleLiveMode)
+
+    return () => {
+      window.removeEventListener('demo-mode-active', handleDemoMode)
+      window.removeEventListener('live-mode-active', handleLiveMode)
+    }
+  }, [])
+
   const getStatusColor = () => {
+    if (isDemoMode) return "bg-blue-500"
     if (!isRealTimeEnabled) return "bg-gray-500"
     switch (connectionStatus) {
       case "connected":
@@ -26,6 +45,7 @@ export function RealTimeStatus() {
   }
 
   const getStatusText = () => {
+    if (isDemoMode) return "Demo Data"
     if (!isRealTimeEnabled) return "Paused"
     switch (connectionStatus) {
       case "connected":
@@ -40,6 +60,7 @@ export function RealTimeStatus() {
   }
 
   const getStatusIcon = () => {
+    if (isDemoMode) return <TestTube className="h-3 w-3" />
     if (!isRealTimeEnabled) return <Pause className="h-3 w-3" />
     if (isConnected) return <Wifi className="h-3 w-3" />
     return <WifiOff className="h-3 w-3" />
@@ -60,8 +81,14 @@ export function RealTimeStatus() {
           <TooltipContent>
             <div className="text-sm">
               <div>Status: {getStatusText()}</div>
-              <div>Updates: {updateCount}</div>
-              {lastUpdate && <div>Last update: {formatDistanceToNow(lastUpdate)} ago</div>}
+              {isDemoMode ? (
+                <div className="text-blue-200">Using demo data - backend unavailable</div>
+              ) : (
+                <>
+                  <div>Updates: {updateCount}</div>
+                  {lastUpdate && <div>Last update: {formatDistanceToNow(lastUpdate)} ago</div>}
+                </>
+              )}
             </div>
           </TooltipContent>
         </Tooltip>

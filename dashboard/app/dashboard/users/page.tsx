@@ -14,44 +14,35 @@ import { Users, Route, Target, BarChart3 } from "lucide-react"
 export default function UsersPage() {
   const [selectedUserId, setSelectedUserId] = useState<string>("")
 
-  // Mock user behavior data - in real app this would come from API
+  // User behavior data with API fallback to demo data
   const {
     data: userBehaviorData,
     isLoading: userBehaviorLoading,
     refetch: refetchUserBehavior,
   } = useQuery({
-    queryKey: ["user-behavior"],
+    queryKey: ["user-behavior-list"],
     queryFn: async () => {
-      // Mock data - replace with actual API call
-      return [
-        {
-          user_id: "user_001",
-          device: "Desktop",
-          total_sessions: 5,
-          total_interactions: 23,
-          pages_visited: ["home_page", "search_page", "payment_page"],
-          conversion_completed: true,
-          sentiment_score: 0.8,
-        },
-        {
-          user_id: "user_002",
-          device: "Mobile",
-          total_sessions: 3,
-          total_interactions: 12,
-          pages_visited: ["home_page", "search_page"],
-          conversion_completed: false,
-          sentiment_score: -0.2,
-        },
-        {
-          user_id: "user_003",
-          device: "Desktop",
-          total_sessions: 8,
-          total_interactions: 45,
-          pages_visited: ["home_page", "search_page", "payment_page", "payment_confirmation_page"],
-          conversion_completed: true,
-          sentiment_score: 0.6,
-        },
-      ]
+      // In demo mode, return all demo users
+      // In real implementation, this would be a proper endpoint
+      try {
+        const response = await dashboardAPI.getUserBehavior("demo_user_12345")
+        // If we get demo data, it means backend is unavailable, so return all demo users
+        const isDemoData = response.data?.user_id === "demo_user_12345"
+        if (isDemoData) {
+          return [
+            response.data,
+            ...(await Promise.all([
+              dashboardAPI.getUserBehavior("user_78901"),
+              dashboardAPI.getUserBehavior("user_23456"),
+              dashboardAPI.getUserBehavior("user_34567")
+            ])).map(r => r.data)
+          ]
+        }
+        return [response.data]
+      } catch (error) {
+        // Fallback for any errors
+        return []
+      }
     },
   })
 
